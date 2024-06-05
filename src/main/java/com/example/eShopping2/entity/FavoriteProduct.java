@@ -1,17 +1,16 @@
 package com.example.eShopping2.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.*;
 
 @Table(name = "favorite_products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+
 public class FavoriteProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +19,11 @@ public class FavoriteProduct {
 
 
     @ManyToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @Column(name = "product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
 }

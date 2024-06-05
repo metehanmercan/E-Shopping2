@@ -1,11 +1,11 @@
 package com.example.eShopping2.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Table(name="categories")
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,6 @@ public class Category {
 
     @Column(name="name")
     private  String name;
-
 
     // Üst kategori ilişkisi
     @ManyToOne(fetch = FetchType.LAZY)

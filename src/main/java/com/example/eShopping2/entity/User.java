@@ -1,12 +1,13 @@
 package com.example.eShopping2.entity;
 
 import com.example.eShopping2.enums.UserRole;
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Table(name="users")
@@ -14,15 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "userName")
-    private String UserName;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "password")
     private String password;
@@ -30,8 +31,15 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name="userRole")
-    private UserRole userRole;
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "fullName")
+    private String fullName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="role")
+    private UserRole role;
 
     @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
     private List<FavoriteProduct> favoriteProducts;

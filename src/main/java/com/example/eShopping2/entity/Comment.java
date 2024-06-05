@@ -1,17 +1,19 @@
 package com.example.eShopping2.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Table(name="comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

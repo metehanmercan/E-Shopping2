@@ -1,11 +1,12 @@
 package com.example.eShopping2.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Table(name="brands")
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,17 +1,19 @@
 package com.example.eShopping2.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name="carts")
+import javax.persistence.*;
+
+@Table(name = "carts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
+
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +21,8 @@ public class CartItem {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="cart_id")
-    private  Cart cart;
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

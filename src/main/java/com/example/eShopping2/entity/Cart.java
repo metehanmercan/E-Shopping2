@@ -1,11 +1,11 @@
 package com.example.eShopping2.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Data
-@Builder
+
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
