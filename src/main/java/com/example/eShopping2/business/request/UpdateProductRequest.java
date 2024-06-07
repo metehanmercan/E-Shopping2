@@ -1,5 +1,6 @@
 package com.example.eShopping2.business.request;
 
+import com.example.eShopping2.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,8 @@ public class UpdateProductRequest {
     private MultipartFile imageFile; // Resim dosyasını burada tutacağız
     private int stockQuantity;
     private String colour;
+    private int categoryId;
+    private int brandId;
+
 
 }

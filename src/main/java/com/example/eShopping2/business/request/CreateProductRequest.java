@@ -18,4 +18,5 @@ public class CreateProductRequest {
     private int stockQuantity;
     private String colour;
     private int categoryId;
+    private int brandId;
 }
