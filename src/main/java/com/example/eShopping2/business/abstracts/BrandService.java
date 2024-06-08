@@ -4,6 +4,7 @@ import com.example.eShopping2.business.request.CreateBrandRequest;
 import com.example.eShopping2.business.request.UpdateBrandRequest;
 
 import com.example.eShopping2.business.response.GetAllBrandsResponse;
+import com.example.eShopping2.business.response.GetAllProductResponse;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface BrandService {
     void update(UpdateBrandRequest updateBrandRequest);
     void  delete(int id);
 
+    // bir markanın  tüm ürünlerini getirme
+    List<GetAllProductResponse> productsBrand(String brandName);
 
 }

@@ -1,12 +1,14 @@
 package com.example.eShopping2.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Table(name="products")
+@Table(name = "products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,16 +29,13 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "imageUrl")
-    private String imageUrl;
-
     @Column(name = "stockQuantity")
     private int stockQuantity;
 
     @Column(name = "colour")
     private String colour;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<FavoriteProduct> favoriteProducts;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -44,7 +43,7 @@ public class Product {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name="brand_id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -55,4 +54,8 @@ public class Product {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> productImages;
+
 }

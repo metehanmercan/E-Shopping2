@@ -4,8 +4,11 @@ import com.example.eShopping2.business.abstracts.BrandService;
 import com.example.eShopping2.business.request.CreateBrandRequest;
 import com.example.eShopping2.business.request.UpdateBrandRequest;
 import com.example.eShopping2.business.response.GetAllBrandsResponse;
+import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.dataAccess.BrandRepository;
 import com.example.eShopping2.entity.Brand;
+import com.example.eShopping2.entity.Product;
+import com.example.eShopping2.entity.ProductImage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,7 @@ public class BrandManager implements BrandService {
         List<GetAllBrandsResponse> getAllBrandsResponses=new ArrayList<>();
         for (Brand brand:brands) {
             GetAllBrandsResponse getAllBrandsResponse=new GetAllBrandsResponse();
+            getAllBrandsResponse.setId(brand.getId());
             getAllBrandsResponse.setName(brand.getName());
             getAllBrandsResponses.add(getAllBrandsResponse);
         }
@@ -56,12 +60,39 @@ public class BrandManager implements BrandService {
     }
 
     @Override
+    public List<GetAllProductResponse> productsBrand(String brandName) {
+        List<Product> products=this.brandRepository.findProductsByBrandName(brandName);
+        List<GetAllProductResponse> getAllProductResponses=new ArrayList<>();
+        for (Product product:products) {
+            GetAllProductResponse getAllProductResponse=new GetAllProductResponse();
+            getAllProductResponse.setName(product.getName());
+            getAllProductResponse.setBrandName(product.getBrand().getName());
+            getAllProductResponse.setPrice(product.getPrice());
+            getAllProductResponse.setColour(product.getColour());
+            getAllProductResponse.setDescription(product.getDescription());
+           getAllProductResponse.setStockQuantity(product.getStockQuantity());
+           getAllProductResponse.setCategoryName(product.getCategory().getName());
+           List<String> imageUrls=new ArrayList<>();
+            for (ProductImage productImage: product.getProductImages()) {
+                imageUrls.add(productImage.getUrl());
+            }
+           getAllProductResponse.setImageUrl(imageUrls);
+
+           getAllProductResponses.add(getAllProductResponse);
+        }
+
+
+        return getAllProductResponses;
+    }
+
+    @Override
     public List<GetAllBrandsResponse> getKeyword(String keyword) {
         List<Brand> brands=this.brandRepository.findByNameContaining(keyword);
         List<GetAllBrandsResponse> getAllBrandsResponses=new ArrayList<>();
         if (keyword !=null){
             for (Brand brand:brands) {
                 GetAllBrandsResponse getAllBrandsResponse=new GetAllBrandsResponse();
+                getAllBrandsResponse.setId(brand.getId());
                 getAllBrandsResponse.setName(brand.getName());
                 getAllBrandsResponses.add(getAllBrandsResponse);
             }

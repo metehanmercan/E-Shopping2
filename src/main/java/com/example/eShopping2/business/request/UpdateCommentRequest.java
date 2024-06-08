@@ -1,21 +1,21 @@
 package com.example.eShopping2.business.request;
 
-import com.example.eShopping2.entity.Product;
-import com.example.eShopping2.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCommentRequest {
+public class UpdateCommentRequest {
 
+    private int id ;
 
     private String content;
-    private int userId;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime createdAt;
-    private int productId;
 }

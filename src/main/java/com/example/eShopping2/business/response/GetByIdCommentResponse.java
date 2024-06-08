@@ -4,14 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetByIdCategoriesResponse {
+public class GetByIdCommentResponse {
     private int id;
-    private String name;
-    private List<GetAllCategoriesResponse> subCategories;
-
+    private String content;
+    private LocalDateTime created;
+    private int userId;
+    private int productId;
 }

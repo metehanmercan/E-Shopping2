@@ -5,9 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCategoriesRequest {
+@NoArgsConstructor
+public class UpdateAddressRequest {
+
     private int id;
-    private String name;
+    private String street;
+    private String city;
+    private String neighborhood;
+    private int userId;
 }

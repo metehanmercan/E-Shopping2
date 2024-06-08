@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllBrandsResponse {
-
+public class GetAllAddressResponse {
     private int id;
-    private String name;
+    private String street;
+    private String city;
+    private String neighborhood;
+    private int userId;
 }

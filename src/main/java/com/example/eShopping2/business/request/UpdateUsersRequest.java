@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateUsersRequest {
-
+    private int id;
    @NotBlank
    @NotNull
    @Size

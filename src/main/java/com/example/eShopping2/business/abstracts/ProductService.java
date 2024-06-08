@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
-    void add(CreateProductRequest createProductRequest) throws IOException;
+    void add(CreateProductRequest createProductRequest);
     List<GetAllProductResponse> getAll();
-    void update(UpdateProductRequest updateProductRequest) throws IOException;
+    void update(UpdateProductRequest updateProductRequest);
 
     GetByIdProductResponse getById(int id);
     void delete(int id);

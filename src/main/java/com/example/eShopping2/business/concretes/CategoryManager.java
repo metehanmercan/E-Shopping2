@@ -4,11 +4,13 @@ import com.example.eShopping2.business.abstracts.CategoryService;
 import com.example.eShopping2.business.request.CreateCategoriesRequest;
 import com.example.eShopping2.business.request.UpdateCategoriesRequest;
 import com.example.eShopping2.business.response.GetAllCategoriesResponse;
+import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.business.response.GetByIdCategoriesResponse;
-import com.example.eShopping2.business.response.GetByIdUsersResponse;
 import com.example.eShopping2.dataAccess.CategoryRepository;
 import com.example.eShopping2.entity.Category;
-import com.example.eShopping2.entity.User;
+
+import com.example.eShopping2.entity.Product;
+import com.example.eShopping2.entity.ProductImage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,23 +32,26 @@ public class CategoryManager implements CategoryService {
 
         for (Category category : categories) {
             if (category.getParentCategory() == null) { // Sadece ana kategoriler için işlem yap
-                GetAllCategoriesResponse getAllCategoriesResponse = convertToResponse(category);
+                GetAllCategoriesResponse getAllCategoriesResponse = convertToGetAllResponse(category);
                 getAllCategoriesResponses.add(getAllCategoriesResponse);
             }
         }
         return getAllCategoriesResponses;
     }
+    private GetAllCategoriesResponse convertToGetAllResponse(Category category) {
+        List<GetAllCategoriesResponse> subCategories = category.getSubCategories().stream()
+                .map(this::convertToGetAllResponse)
+                .collect(Collectors.toList());
 
-    @Override
-    public GetByIdCategoriesResponse geyById(int id) {
-
-        Optional<Category> optionalCategory = this.categoryRepository.findById(id);
-
-        return optionalCategory
-                .map(this::convertToGetByIdResponse)
-                .orElse(null);
+        return new GetAllCategoriesResponse(category.getId(), category.getName(), subCategories);
     }
 
+    @Override
+    public GetByIdCategoriesResponse getById(int id) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+
+        return optionalCategory.map(this::convertToGetByIdResponse).orElse(null);
+    }
     private GetByIdCategoriesResponse convertToGetByIdResponse(Category category) {
         List<GetAllCategoriesResponse> subCategories = category.getSubCategories().stream()
                 .map(this::convertToGetAllResponse)
@@ -55,27 +60,7 @@ public class CategoryManager implements CategoryService {
         return new GetByIdCategoriesResponse(category.getId(), category.getName(), subCategories);
     }
 
-    private GetAllCategoriesResponse convertToGetAllResponse(Category category) {
-        List<GetAllCategoriesResponse> subCategories = category.getSubCategories().stream()
-                .map(this::convertToGetAllResponse)
-                .collect(Collectors.toList());
 
-        return new GetAllCategoriesResponse(category.getName(), subCategories);
-    }
-
-
-    private GetAllCategoriesResponse convertToResponse(Category category) {
-        GetAllCategoriesResponse response = new GetAllCategoriesResponse();
-        response.setName(category.getName());
-
-        if (category.getSubCategories() != null && !category.getSubCategories().isEmpty()) {
-            List<GetAllCategoriesResponse> subCategoryResponses = category.getSubCategories().stream()
-                    .map(this::convertToResponse)
-                    .collect(Collectors.toList());
-            response.setSubCategories(subCategoryResponses);
-        }
-        return response;
-    }
 
     @Override
     public void add(CreateCategoriesRequest createCategoriesRequest) {
@@ -93,15 +78,38 @@ public class CategoryManager implements CategoryService {
     @Override
     public void update(UpdateCategoriesRequest updateCategoriesRequest) {
         // Mevcut kategoriyi bul
-        Category category = categoryRepository.findByName(updateCategoriesRequest.getCurrentName());
+        Category category = categoryRepository.getById(updateCategoriesRequest.getId());
 
-        category.setName(updateCategoriesRequest.getNewName());
+        category.setName(updateCategoriesRequest.getName());
         categoryRepository.save(category);
     }
 
     @Override
     public void delete(int id) {
         this.categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public List<GetAllProductResponse> productsCategoryName(String name) {
+        List<Product> products=this.categoryRepository.findProductsByCategoryName(name);
+        List<GetAllProductResponse> getAllProductResponses=new ArrayList<>();
+        for (Product product:products) {
+            GetAllProductResponse getAllProductResponse=new GetAllProductResponse();
+            getAllProductResponse.setCategoryName(product.getCategory().getName());
+            getAllProductResponse.setBrandName(product.getBrand().getName());
+            getAllProductResponse.setPrice(product.getPrice());
+            getAllProductResponse.setColour(product.getColour());
+            getAllProductResponse.setDescription(product.getDescription());
+            getAllProductResponse.setStockQuantity(product.getStockQuantity());
+            getAllProductResponse.setName(product.getName());
+            List<String> imageUrls=new ArrayList<>();
+            for (ProductImage productImage: product.getProductImages()) {
+                imageUrls.add(productImage.getUrl());
+            }
+            getAllProductResponse.setImageUrl(imageUrls);
+            getAllProductResponses.add(getAllProductResponse);
+        }
+        return getAllProductResponses;
     }
 
     @Override

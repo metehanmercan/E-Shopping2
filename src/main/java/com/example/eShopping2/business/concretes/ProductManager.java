@@ -11,6 +11,7 @@ import com.example.eShopping2.dataAccess.ProductRepository;
 import com.example.eShopping2.entity.Brand;
 import com.example.eShopping2.entity.Category;
 import com.example.eShopping2.entity.Product;
+import com.example.eShopping2.entity.ProductImage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +29,7 @@ public class ProductManager implements ProductService {
     private BrandRepository brandRepository;
 
     @Override
-    public void add(CreateProductRequest createProductRequest) throws IOException {
+    public void add(CreateProductRequest createProductRequest) {
         Product product = new Product();
         product.setName(createProductRequest.getName());
         product.setDescription(createProductRequest.getDescription());
@@ -36,48 +37,25 @@ public class ProductManager implements ProductService {
         product.setStockQuantity(createProductRequest.getStockQuantity());
         product.setColour(createProductRequest.getColour());
         // brand ayarla
-        Brand brand=brandRepository.findById(createProductRequest.getBrandId()).orElseThrow();
+        Brand brand = brandRepository.findById(createProductRequest.getBrandId()).orElseThrow();
         product.setBrand(brand);
         // Kategoriyi ayarla
         Category category = categoryRepository.findById(createProductRequest.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
         product.setCategory(category);
-
-        // Resim dosyasını kaydet
-        String imageUrl = saveImage(createProductRequest.getImageFile());
-        product.setImageUrl(imageUrl);
-        System.out.println();
+        // image set et
+        List<ProductImage> productImages = new ArrayList<>();
+        for (String url : createProductRequest.getImageUrls()) {
+            ProductImage productImage = new ProductImage();
+            productImage.setUrl(url);
+            productImage.setProduct(product);
+            productImages.add(productImage);
+        }
+        product.setProductImages(productImages);
 
         productRepository.save(product);
     }
 
-
-    private String saveImage(MultipartFile imageFile) throws IOException {
-        if (imageFile == null || imageFile.isEmpty()) {
-            return null;
-        }
-
-        String uploadDir = System.getProperty("user.dir") + File.separator + "product-images" + File.separator;
-        File uploadDirFile = new File(uploadDir);
-
-        if (!uploadDirFile.exists()) {
-            boolean created = uploadDirFile.mkdirs();
-            if (!created) {
-                throw new IOException("Failed to create directory: " + uploadDir);
-            }
-        }
-
-        String fileName = System.currentTimeMillis() + "-" + imageFile.getOriginalFilename();
-        File destinationFile = new File(uploadDir + fileName);
-
-        try {
-            imageFile.transferTo(destinationFile);
-        } catch (IOException e) {
-            throw new IOException("Error saving product image: " + e.getMessage());
-        }
-
-        return destinationFile.getAbsolutePath();
-    }
 
     @Override
     public List<GetAllProductResponse> getAll() {
@@ -91,7 +69,7 @@ public class ProductManager implements ProductService {
             getAllProductResponse.setName(product.getName());
             getAllProductResponse.setDescription(product.getDescription());
             getAllProductResponse.setStockQuantity(product.getStockQuantity());
-            getAllProductResponse.setImageUrl(product.getImageUrl());
+            // image set et
             getAllProductResponse.setCategoryName(product.getCategory().getName());
             getAllProductResponse.setBrandName(product.getBrand().getName());
             getAllProductResponses.add(getAllProductResponse);
@@ -100,7 +78,7 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public void update(UpdateProductRequest updateProductRequest) throws IOException {
+    public void update(UpdateProductRequest updateProductRequest)  {
         Product product = this.productRepository.getById(updateProductRequest.getId());
 
         product.setColour(updateProductRequest.getColour());
@@ -108,19 +86,22 @@ public class ProductManager implements ProductService {
         product.setPrice(updateProductRequest.getPrice());
         product.setStockQuantity(updateProductRequest.getStockQuantity());
         product.setDescription(updateProductRequest.getDescription());
-
+        // İMAGE SET ET
+        List<ProductImage> productImages = new ArrayList<>();
+        for (String url : updateProductRequest.getImageUrls()) {
+            ProductImage productImage = new ProductImage();
+            productImage.setUrl(url);
+            productImage.setProduct(product);
+            productImages.add(productImage);
+        }
+        product.setProductImages(productImages);
         // kategori ayarlama
         Category category = this.categoryRepository.findById(updateProductRequest.getCategoryId()).orElseThrow();
         product.setCategory(category);
         // brand ayarlama
-        Brand brand=this.brandRepository.findById(updateProductRequest.getBrandId()).orElseThrow();
-       product.setBrand(brand);
+        Brand brand = this.brandRepository.findById(updateProductRequest.getBrandId()).orElseThrow();
+        product.setBrand(brand);
 
-        // Resim dosyasını güncelle
-        if (updateProductRequest.getImageFile() != null && !updateProductRequest.getImageFile().isEmpty()) {
-            String imageUrl = saveImage(updateProductRequest.getImageFile());
-            product.setImageUrl(imageUrl);
-        }
         productRepository.save(product);
     }
 
@@ -132,14 +113,20 @@ public class ProductManager implements ProductService {
         getByIdProductResponse.setColour(product.getColour());
         getByIdProductResponse.setDescription(product.getDescription());
         getByIdProductResponse.setPrice(product.getPrice());
-        getByIdProductResponse.setImageUrl(product.getImageUrl());
+        // İMAGE SET ET
+        List<String> imageUrls = new ArrayList<>();
+        for (ProductImage productImage : product.getProductImages()) {
+            imageUrls.add(productImage.getUrl());
+        }
+        getByIdProductResponse.setImageUrls(imageUrls);
+
         getByIdProductResponse.setStockQuantity(product.getStockQuantity());
         getByIdProductResponse.setId(product.getId());
         getByIdProductResponse.setBrandName(product.getBrand().getName());
         getByIdProductResponse.setCategoryName(product.getCategory().getName()); // alttaki iki satırla aynı işleme sahip mi araştır?
         // KATEGORİ AYARI
-       // Category category = product.getCategory();
-     //   getByIdProductResponse.setCategoryName(category.getName());
+        // Category category = product.getCategory();
+        //   getByIdProductResponse.setCategoryName(category.getName());
 
         return getByIdProductResponse;
     }
@@ -160,10 +147,17 @@ public class ProductManager implements ProductService {
             getAllProductResponse.setColour(product.getColour());
             getAllProductResponse.setDescription(product.getDescription());
             getAllProductResponse.setName(product.getName());
-            getAllProductResponse.setImageUrl(product.getImageUrl());
+            // image set et
+            List<ProductImage> productImages=product.getProductImages();
+            List<String> imageUrls =new ArrayList<>();
+            for (ProductImage productImage:productImages) {
+                imageUrls.add(productImage.getUrl());
+            }
+            getAllProductResponse.setImageUrl(imageUrls);
+
             getAllProductResponse.setStockQuantity(product.getStockQuantity());
             // KATEGORİ ATAMA
-           // Category category = product.getCategory();
+            // Category category = product.getCategory();
             getAllProductResponse.setCategoryName(product.getCategory().getName());
             getAllProductResponse.setBrandName(product.getBrand().getName());
             getAllProductResponses.add(getAllProductResponse);

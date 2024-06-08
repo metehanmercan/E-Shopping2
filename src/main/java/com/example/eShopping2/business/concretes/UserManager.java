@@ -95,15 +95,14 @@ public class UserManager implements UserService {
 
     @Override
     public void update(UpdateUsersRequest updateUsersRequest) {
-        // mail ile güncelleme
-        this.userBusinessRule.checkIfExistsEmail1(updateUsersRequest.getEmail());
-        User user = userRepository.findByEmail(updateUsersRequest.getEmail()).orElseThrow();
 
+
+        User user = userRepository.findById(updateUsersRequest.getId()).orElseThrow();
+        user.setEmail(user.getEmail());
         user.setPassword(updateUsersRequest.getPassword());
         user.setPhone(updateUsersRequest.getPhone());
         userRepository.save(user);
     }
-
     @Override
     public void add(CreateUsersRequest createUsersRequest) {
         this.userBusinessRule.checkIfExistsName(createUsersRequest.getName());

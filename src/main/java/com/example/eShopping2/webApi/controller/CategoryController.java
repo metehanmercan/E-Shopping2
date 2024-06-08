@@ -4,7 +4,8 @@ import com.example.eShopping2.business.abstracts.CategoryService;
 import com.example.eShopping2.business.request.CreateCategoriesRequest;
 import com.example.eShopping2.business.request.UpdateCategoriesRequest;
 import com.example.eShopping2.business.response.GetAllCategoriesResponse;
-import com.example.eShopping2.business.response.GetAllUsersResponse;
+
+import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.business.response.GetByIdCategoriesResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,10 +41,14 @@ public class CategoryController {
 
    @GetMapping("({id}")
    public GetByIdCategoriesResponse getById(int id){
-      return this.categoryService.geyById(id);
+      return this.categoryService.getById(id);
    }
    @GetMapping("/getKeyword")
    public List<GetAllCategoriesResponse>  keyWord(String name){
       return categoryService.getKeyword(name);
+   }
+   @GetMapping("/productsCategory")
+   public List<GetAllProductResponse> productsCategory(String name){
+      return this.categoryService.productsCategoryName(name);
    }
 }

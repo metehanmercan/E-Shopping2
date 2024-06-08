@@ -1,4 +1,4 @@
-package com.example.eShopping2.business.request;
+package com.example.eShopping2.business.response;
 
 import com.example.eShopping2.entity.Product;
 import com.example.eShopping2.entity.User;
@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class CreateCommentRequest {
+public class GetAllCommentResponse {
 
-
-    private String content;
+    private  int id;
+    private  String content;
+    private LocalDateTime created;
     private int userId;
-    private LocalDateTime createdAt;
     private int productId;
 }

@@ -11,6 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 public class GetAllCategoriesResponse {
 
+    private int id;
     private String name;
     private List<GetAllCategoriesResponse> subCategories;
+
+
 }

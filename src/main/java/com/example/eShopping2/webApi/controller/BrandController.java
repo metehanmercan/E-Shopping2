@@ -4,6 +4,7 @@ import com.example.eShopping2.business.abstracts.BrandService;
 import com.example.eShopping2.business.request.CreateBrandRequest;
 import com.example.eShopping2.business.request.UpdateBrandRequest;
 import com.example.eShopping2.business.response.GetAllBrandsResponse;
+import com.example.eShopping2.business.response.GetAllProductResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/brand")
 public class BrandController {
     private BrandService brandService;
-    @GetMapping("/add")
+    @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
     public void add(@RequestBody @Valid CreateBrandRequest createBrandRequest){
         this.brandService.add(createBrandRequest);
@@ -43,5 +44,10 @@ public class BrandController {
     @GetMapping("/keyword")
     public List<GetAllBrandsResponse> getKeyword(String keyword){
         return this.brandService.getKeyword(keyword);
+    }
+
+    @GetMapping("/productsBrand")
+    public List<GetAllProductResponse> productsBrand(String brandName){
+        return this.brandService.productsBrand(brandName);
     }
 }

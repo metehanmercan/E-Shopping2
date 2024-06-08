@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Table(name="comments")
 @Data
@@ -30,4 +31,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private  Product product;
+
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
 }
