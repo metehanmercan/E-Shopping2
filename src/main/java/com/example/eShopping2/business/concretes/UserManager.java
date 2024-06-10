@@ -6,11 +6,14 @@ import com.example.eShopping2.business.request.UpdateUsersRequest;
 import com.example.eShopping2.business.response.GetAllUsersResponse;
 import com.example.eShopping2.business.response.GetByIdUsersResponse;
 import com.example.eShopping2.business.rule.UserBusinessRule;
+import com.example.eShopping2.dataAccess.CartRepository;
 import com.example.eShopping2.dataAccess.UserRepository;
+import com.example.eShopping2.entity.Cart;
 import com.example.eShopping2.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import java.util.List;
 public class UserManager implements UserService {
     private UserRepository userRepository;
     private UserBusinessRule userBusinessRule;
+    private CartRepository cartRepository;
 
     @Override
     public List<GetAllUsersResponse> getAll() {
@@ -115,6 +119,12 @@ public class UserManager implements UserService {
         user.setRole(createUsersRequest.getRole());
         user.setPhone(createUsersRequest.getPhone());
         this.userRepository.save(user);
+        // Kullanıcı için yeni bir sepet oluştur
+        Cart cart=new Cart();
+        cart.setUser(user);
+        cart.setTotalPrice(BigDecimal.ZERO); // başlangıçta FİYAT SIFIR
+        this.cartRepository.save(cart);
+
     }
     @Override
     public void delete(int id) {

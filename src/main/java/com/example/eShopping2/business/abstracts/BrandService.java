@@ -20,5 +20,5 @@ public interface BrandService {
 
     // bir markanın  tüm ürünlerini getirme
     List<GetAllProductResponse> productsBrand(String brandName);
-
+    List<GetAllProductResponse> productsBrand(int brandId);
 }

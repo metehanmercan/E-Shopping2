@@ -14,5 +14,8 @@ public interface BrandRepository extends JpaRepository<Brand,Integer> {
     @Query("SELECT b.products FROM Brand b WHERE b.name = :name")
     List<Product> findProductsByBrandName(@Param("name") String name); // Bu sorgu, verilen marka adına göre ürünleri getirir
 
-   // List<Product> findProductsByBrandName(String name); // bu niye getirmedi araştır
+    @Query("SELECT p FROM Product p WHERE p.brand.id = :brandId")    // Bu sorgu, verilen marka  id'sine  göre ürünleri getirir
+    List<Product> findProductsByBrandId(@Param("brandId") int brandId);
+
+
 }

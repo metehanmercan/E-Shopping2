@@ -50,4 +50,8 @@ public class BrandController {
     public List<GetAllProductResponse> productsBrand(String brandName){
         return this.brandService.productsBrand(brandName);
     }
+    @GetMapping("/productsBrandId")
+    public List<GetAllProductResponse> productsBrand(int id){
+        return this.brandService.productsBrand(id);
+    }
 }

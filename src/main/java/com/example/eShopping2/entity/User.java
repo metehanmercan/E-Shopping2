@@ -44,7 +44,7 @@ public class User {
     @OneToMany(mappedBy ="user",cascade = CascadeType.ALL)
     private List<FavoriteProduct> favoriteProducts;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

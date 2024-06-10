@@ -3,6 +3,7 @@ package com.example.eShopping2.business.concretes;
 import com.example.eShopping2.business.abstracts.BrandService;
 import com.example.eShopping2.business.request.CreateBrandRequest;
 import com.example.eShopping2.business.request.UpdateBrandRequest;
+import com.example.eShopping2.business.response.GetAllAddressResponse;
 import com.example.eShopping2.business.response.GetAllBrandsResponse;
 import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.dataAccess.BrandRepository;
@@ -79,6 +80,32 @@ public class BrandManager implements BrandService {
            getAllProductResponse.setImageUrl(imageUrls);
 
            getAllProductResponses.add(getAllProductResponse);
+        }
+
+
+        return getAllProductResponses;
+    }
+
+    @Override
+    public List<GetAllProductResponse> productsBrand(int brandId) {
+        List<Product> products=this.brandRepository.findProductsByBrandId(brandId);
+        List<GetAllProductResponse> getAllProductResponses=new ArrayList<>();
+        for (Product product:products) {
+            GetAllProductResponse getAllProductResponse=new GetAllProductResponse();
+            getAllProductResponse.setName(product.getName());
+            getAllProductResponse.setBrandName(product.getBrand().getName());
+            getAllProductResponse.setPrice(product.getPrice());
+            getAllProductResponse.setColour(product.getColour());
+            getAllProductResponse.setDescription(product.getDescription());
+            getAllProductResponse.setStockQuantity(product.getStockQuantity());
+            getAllProductResponse.setCategoryName(product.getCategory().getName());
+            List<String> imageUrls=new ArrayList<>();
+            for (ProductImage productImage: product.getProductImages()) {
+                imageUrls.add(productImage.getUrl());
+            }
+            getAllProductResponse.setImageUrl(imageUrls);
+
+            getAllProductResponses.add(getAllProductResponse);
         }
 
 
