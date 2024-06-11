@@ -29,7 +29,7 @@ public class CreateUsersRequest {
 
     @NotNull
     @NotBlank
-    @Size(min = 3, max = 25)
+    @Size(min = 3, max = 45)
     private String email;
 
     @NotNull

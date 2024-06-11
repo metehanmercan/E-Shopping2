@@ -2,6 +2,7 @@ package com.example.eShopping2.business.concretes;
 
 import com.example.eShopping2.business.abstracts.CartService;
 import com.example.eShopping2.business.abstracts.InventoryService;
+import com.example.eShopping2.business.abstracts.NotificationService;
 import com.example.eShopping2.business.abstracts.OrderService;
 import com.example.eShopping2.business.request.CreateOrderRequest;
 import com.example.eShopping2.dataAccess.OrderRepository;
@@ -25,6 +26,7 @@ public class OrderManager implements OrderService {
     private OrderRepository orderRepository;
     private InventoryService inventoryService;
     private CartService cartService;
+    private NotificationService notificationService;
 
     @Transactional
     @Override
@@ -69,7 +71,7 @@ public class OrderManager implements OrderService {
         orderRepository.save(order);
 
         // Bildirim gönderme araştır
-    //    notificationService.sendOrderConfirmation(user, order);
+      notificationService.sendOrderConfirmation(user, order);
 
 
         // sepeti boşaltma
