@@ -13,7 +13,6 @@ import com.example.eShopping2.entity.Product;
 import com.example.eShopping2.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,11 +79,11 @@ public class CommentManager implements CommentService {
     }
 
     @Override
-    public List<GetAllCommentResponse> commentsProduct(String productName) {
-        List<Comment> comments=this.commentRepository.findCommentsByProductName(productName);
-        List<GetAllCommentResponse> getAllCommentResponses=new ArrayList<>();
-        for (Comment comment:comments) {
-            GetAllCommentResponse getAllCommentResponse=new GetAllCommentResponse();
+    public List<GetAllCommentResponse> commentsProduct(int productId) {
+        List<Comment> comments = this.commentRepository.findCommentsByProductId(productId);
+        List<GetAllCommentResponse> getAllCommentResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            GetAllCommentResponse getAllCommentResponse = new GetAllCommentResponse();
             getAllCommentResponse.setId(comment.getId());
             getAllCommentResponse.setCreated(comment.getCreatedAt());
             getAllCommentResponse.setProductId(comment.getProduct().getId());
@@ -94,6 +93,4 @@ public class CommentManager implements CommentService {
         }
         return getAllCommentResponses;
     }
-
-
 }

@@ -4,7 +4,6 @@ import com.example.eShopping2.business.abstracts.FavoriteProductService;
 import com.example.eShopping2.business.request.CreateFavoriteProductRequest;
 import com.example.eShopping2.business.request.UpdateFavoriteProductRequest;
 import com.example.eShopping2.business.response.GetAllFavoriteProductResponse;
-import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.dataAccess.FavoriteProductRepository;
 import com.example.eShopping2.dataAccess.ProductRepository;
 import com.example.eShopping2.dataAccess.UserRepository;
@@ -13,7 +12,6 @@ import com.example.eShopping2.entity.Product;
 import com.example.eShopping2.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 

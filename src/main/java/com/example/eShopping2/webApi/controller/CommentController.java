@@ -41,7 +41,7 @@ public class CommentController {
     }
 
     @GetMapping("/commentsProduct")
-    public List<GetAllCommentResponse> commentsProduct(String productName){
-    return this.commentService.commentsProduct(productName);
+    public List<GetAllCommentResponse> commentsProduct(int productId){
+    return this.commentService.commentsProduct(productId);
     }
 }

@@ -10,10 +10,13 @@ import java.util.List;
 
 public interface ProductService {
     void add(CreateProductRequest createProductRequest);
+
     List<GetAllProductResponse> getAll();
+
     void update(UpdateProductRequest updateProductRequest);
 
     GetByIdProductResponse getById(int id);
+
     void delete(int id);
 
     List<GetAllProductResponse> getKeyword(String keyword);

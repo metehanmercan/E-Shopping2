@@ -8,7 +8,6 @@ import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.business.response.GetByIdCategoriesResponse;
 import com.example.eShopping2.dataAccess.CategoryRepository;
 import com.example.eShopping2.entity.Category;
-
 import com.example.eShopping2.entity.Product;
 import com.example.eShopping2.entity.ProductImage;
 import lombok.AllArgsConstructor;
@@ -38,6 +37,7 @@ public class CategoryManager implements CategoryService {
         }
         return getAllCategoriesResponses;
     }
+
     private GetAllCategoriesResponse convertToGetAllResponse(Category category) {
         List<GetAllCategoriesResponse> subCategories = category.getSubCategories().stream()
                 .map(this::convertToGetAllResponse)
@@ -52,6 +52,7 @@ public class CategoryManager implements CategoryService {
 
         return optionalCategory.map(this::convertToGetByIdResponse).orElse(null);
     }
+
     private GetByIdCategoriesResponse convertToGetByIdResponse(Category category) {
         List<GetAllCategoriesResponse> subCategories = category.getSubCategories().stream()
                 .map(this::convertToGetAllResponse)
@@ -59,7 +60,6 @@ public class CategoryManager implements CategoryService {
 
         return new GetByIdCategoriesResponse(category.getId(), category.getName(), subCategories);
     }
-
 
 
     @Override
@@ -91,10 +91,10 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public List<GetAllProductResponse> productsCategoryName(String name) {
-        List<Product> products=this.categoryRepository.findProductsByCategoryName(name);
-        List<GetAllProductResponse> getAllProductResponses=new ArrayList<>();
-        for (Product product:products) {
-            GetAllProductResponse getAllProductResponse=new GetAllProductResponse();
+        List<Product> products = this.categoryRepository.findProductsByCategoryName(name);
+        List<GetAllProductResponse> getAllProductResponses = new ArrayList<>();
+        for (Product product : products) {
+            GetAllProductResponse getAllProductResponse = new GetAllProductResponse();
             getAllProductResponse.setCategoryName(product.getCategory().getName());
             getAllProductResponse.setBrandName(product.getBrand().getName());
             getAllProductResponse.setPrice(product.getPrice());
@@ -102,8 +102,8 @@ public class CategoryManager implements CategoryService {
             getAllProductResponse.setDescription(product.getDescription());
             getAllProductResponse.setStockQuantity(product.getStockQuantity());
             getAllProductResponse.setName(product.getName());
-            List<String> imageUrls=new ArrayList<>();
-            for (ProductImage productImage: product.getProductImages()) {
+            List<String> imageUrls = new ArrayList<>();
+            for (ProductImage productImage : product.getProductImages()) {
                 imageUrls.add(productImage.getUrl());
             }
             getAllProductResponse.setImageUrl(imageUrls);
@@ -113,15 +113,15 @@ public class CategoryManager implements CategoryService {
     }
 
     @Override
-    public List<GetAllCategoriesResponse>  getKeyword(String name) {
+    public List<GetAllCategoriesResponse> getKeyword(String name) {
         List<Category> categories = this.categoryRepository.findByNameContaining(name);
         List<GetAllCategoriesResponse> getAllCategoriesResponses = new ArrayList<>();
         if (name != null) {
 
-            for (Category category1:categories) {
-                GetAllCategoriesResponse getAllCategoriesResponse=new GetAllCategoriesResponse();
+            for (Category category1 : categories) {
+                GetAllCategoriesResponse getAllCategoriesResponse = new GetAllCategoriesResponse();
                 getAllCategoriesResponse.setName(category1.getName());
-               getAllCategoriesResponses.add(getAllCategoriesResponse);
+                getAllCategoriesResponses.add(getAllCategoriesResponse);
             }
         }
         return getAllCategoriesResponses;

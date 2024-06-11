@@ -12,7 +12,6 @@ import com.example.eShopping2.entity.Cart;
 import com.example.eShopping2.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,7 @@ public class UserManager implements UserService {
         }
         return getAllUsersResponses;
     }
+
     @Override
     public List<GetAllUsersResponse> getKeyword(String keyword) {
         if (keyword != null) {
@@ -107,6 +107,7 @@ public class UserManager implements UserService {
         user.setPhone(updateUsersRequest.getPhone());
         userRepository.save(user);
     }
+
     @Override
     public void add(CreateUsersRequest createUsersRequest) {
         this.userBusinessRule.checkIfExistsName(createUsersRequest.getName());
@@ -120,12 +121,13 @@ public class UserManager implements UserService {
         user.setPhone(createUsersRequest.getPhone());
         this.userRepository.save(user);
         // Kullanıcı için yeni bir sepet oluştur
-        Cart cart=new Cart();
+        Cart cart = new Cart();
         cart.setUser(user);
         cart.setTotalPrice(BigDecimal.ZERO); // başlangıçta FİYAT SIFIR
         this.cartRepository.save(cart);
 
     }
+
     @Override
     public void delete(int id) {
         this.userBusinessRule.checkIfExistsId(id);

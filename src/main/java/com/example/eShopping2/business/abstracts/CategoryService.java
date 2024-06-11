@@ -2,11 +2,9 @@ package com.example.eShopping2.business.abstracts;
 
 import com.example.eShopping2.business.request.CreateCategoriesRequest;
 import com.example.eShopping2.business.request.UpdateCategoriesRequest;
-
 import com.example.eShopping2.business.response.GetAllCategoriesResponse;
 import com.example.eShopping2.business.response.GetAllProductResponse;
 import com.example.eShopping2.business.response.GetByIdCategoriesResponse;
-
 import java.util.List;
 
 public interface CategoryService {

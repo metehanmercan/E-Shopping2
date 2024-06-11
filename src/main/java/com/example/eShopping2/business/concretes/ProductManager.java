@@ -14,10 +14,6 @@ import com.example.eShopping2.entity.Product;
 import com.example.eShopping2.entity.ProductImage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +74,7 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public void update(UpdateProductRequest updateProductRequest)  {
+    public void update(UpdateProductRequest updateProductRequest) {
         Product product = this.productRepository.getById(updateProductRequest.getId());
 
         product.setColour(updateProductRequest.getColour());
@@ -148,9 +144,9 @@ public class ProductManager implements ProductService {
             getAllProductResponse.setDescription(product.getDescription());
             getAllProductResponse.setName(product.getName());
             // image set et
-            List<ProductImage> productImages=product.getProductImages();
-            List<String> imageUrls =new ArrayList<>();
-            for (ProductImage productImage:productImages) {
+            List<ProductImage> productImages = product.getProductImages();
+            List<String> imageUrls = new ArrayList<>();
+            for (ProductImage productImage : productImages) {
                 imageUrls.add(productImage.getUrl());
             }
             getAllProductResponse.setImageUrl(imageUrls);

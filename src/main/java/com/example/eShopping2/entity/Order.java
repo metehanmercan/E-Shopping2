@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Table(name="orders")
@@ -34,5 +35,6 @@ public class Order {
     @Column(nullable = false)
     private OrderStatus status;
 
-
+    @Column(name = "order_date", nullable = false)
+    private Date orderDate;
 }

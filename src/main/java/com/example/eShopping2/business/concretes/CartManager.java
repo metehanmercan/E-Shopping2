@@ -57,7 +57,7 @@ public class CartManager implements CartService {
         List<CartItem> cartItems = cartItemRepository.findByCartUserId(userId);
         List<GetAllCartItemResponse> getAllCartItemResponses = new ArrayList<>();
         for (CartItem cartItem : cartItems) {
-            GetAllCartItemResponse getAllCartItemResponse=new GetAllCartItemResponse();
+            GetAllCartItemResponse getAllCartItemResponse = new GetAllCartItemResponse();
             getAllCartItemResponse.setId(cartItem.getId());
             getAllCartItemResponse.setTotalPrice(cartItem.getPrice());
             getAllCartItemResponse.setQuantity(cartItem.getQuantity());
@@ -71,15 +71,15 @@ public class CartManager implements CartService {
 
     @Override
     public BigDecimal getTotalCartPrice(int userId) {
-        Cart cart=this.cartRepository.findByUserId(userId);
+        Cart cart = this.cartRepository.findByUserId(userId);
         return cart.getTotalPrice();
     }
 
     @Override
     public void update(int userId, int cartItemId, int quantity) {
-        Cart cart=this.cartRepository.findByUserId(userId);
-        CartItem cartItem=this.cartItemRepository.getById(cartItemId);
-        if(!cart.getCartItems().contains(cartItem)){
+        Cart cart = this.cartRepository.findByUserId(userId);
+        CartItem cartItem = this.cartItemRepository.getById(cartItemId);
+        if (!cart.getCartItems().contains(cartItem)) {
             throw new RuntimeException("CartItem does not belong to the user's cart");
         }
 
@@ -94,6 +94,14 @@ public class CartManager implements CartService {
         }
 
         cart.setTotalPrice(newTotalPrice);
+        cartRepository.save(cart);
+    }
+
+    @Override
+    public void clearCart(Cart cart) {
+        // Sepet öğelerini temizleme işlemi
+        cart.getCartItems().clear();
+        cart.setTotalPrice(BigDecimal.ZERO);
         cartRepository.save(cart);
     }
 }
