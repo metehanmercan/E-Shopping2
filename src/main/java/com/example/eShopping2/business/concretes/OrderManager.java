@@ -57,53 +57,58 @@ public class OrderManager implements OrderService {
         // ödeme işlemi araştır
         //  paymentService.processPayment(user, totalPrice);
 
-        BigDecimal totalPrice = cart.getTotalPrice();
+     /*   BigDecimal totalPrice = cart.getTotalPrice();
         PaymentIntent paymentIntent = paymentManager.createPaymentIntent(totalPrice);
 
         if ("succeeded".equals(paymentIntent.getStatus())) {
-            // sipariş oluşturma
-            Order order = new Order();
-            order.setUser(user);
-            order.setOrderDate(new Date());
-            order.setStatus(OrderStatus.CREATED);
-            order.setTotalPrice(cart.getTotalPrice());
-
-            // OrderItem oluşturma ve siparişe ekleme
-            List<OrderItem> orderItems = new ArrayList<>();
-            for (CartItem cartItem : cart.getCartItems()) {
-                OrderItem orderItem = new OrderItem();
-                orderItem.setOrder(order);
-                orderItem.setPrice(cartItem.getPrice());
-                orderItem.setQuantity(cartItem.getQuantity());
-                orderItem.setProduct(cartItem.getProduct());
-                orderItems.add(orderItem);
-            }
-            order.setOrderItems(orderItems);
-
-            // Sipariş adresi oluştur
-            Address address = new Address();
-            address.setStreet(createOrderRequest.getStreet());
-            address.setCity(createOrderRequest.getCity());
-            address.setNeighborhood(createOrderRequest.getNeighborhood());
-            address.setUser(user);
-            addressRepository.save(address);
-
-            orderRepository.save(order);
-
-
-            // Mail ile Bildirim gönderme araştır
-            //   notificationService.sendOrderConfirmation(user, order);
-
-            //   byte[] invoice = invoiceGenerator.generateInvoice(order);
-            //    saveInvoiceToFileSystem(invoice, order.getId()); // PDF'yi dosya sistemi veya veritabanına kaydedebilirsiniz
-            //    notificationService.sendOrderConfirmationInvoice(user,order);
-
-            // sepeti boşaltma
-            cartService.clearCart(cart);
-        }else {
+        } else {
             throw new IllegalAccessException("Payment failed");
         }
+    }*/
+
+        // sipariş oluşturma
+        Order order = new Order();
+        order.setUser(user);
+        order.setOrderDate(new Date());
+        order.setStatus(OrderStatus.CREATED);
+        order.setTotalPrice(cart.getTotalPrice());
+
+        // OrderItem oluşturma ve siparişe ekleme
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (CartItem cartItem : cart.getCartItems()) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setPrice(cartItem.getPrice());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setProduct(cartItem.getProduct());
+            orderItems.add(orderItem);
+        }
+        order.setOrderItems(orderItems);
+
+        // Sipariş adresi oluştur
+        Address address = new Address();
+        address.setStreet(createOrderRequest.getStreet());
+        address.setCity(createOrderRequest.getCity());
+        address.setNeighborhood(createOrderRequest.getNeighborhood());
+        address.setUser(user);
+        addressRepository.save(address);
+
+        this.orderRepository.save(order);
+
+
+        // Mail ile Bildirim gönderme araştır
+        //   notificationService.sendOrderConfirmation(user, order);
+
+        // fatura detayı gönderme pdf olarak
+        //   byte[] invoice = invoiceGenerator.generateInvoice(order);
+        //    saveInvoiceToFileSystem(invoice, order.getId()); // PDF'yi dosya sistemi veya veritabanına kaydedebilirsiniz
+        //    notificationService.sendOrderConfirmationInvoice(user,order);
+
+        // sepeti boşaltma
+        cartService.clearCart(cart);
+
     }
+
     private void saveInvoiceToFileSystem(byte[] invoice, int orderId) {
         // Fatura dosyasını dosya sistemi veya veritabanına kaydetme işlemi yapılabilir
         // Bu örnek üzerinde detaya girmiyorum, genel olarak işlemi gösteriyorum
@@ -131,12 +136,12 @@ public class OrderManager implements OrderService {
 
     @Override
     public void updateOrderStatus(int orderId, OrderStatus status) {
-        Order order=this.orderRepository.findById(orderId).orElseThrow(() -> new BusinessException("Order not found"));
+        Order order = this.orderRepository.findById(orderId).orElseThrow(() -> new BusinessException("Order not found"));
         order.setStatus(status);
         orderRepository.save(order);
 
         //bildiirim
-       // notificationService.sendOrderStatusUpdateNotification(order.getUser(),order);
+        // notificationService.sendOrderStatusUpdateNotification(order.getUser(),order);
     }
 }
 

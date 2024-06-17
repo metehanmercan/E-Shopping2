@@ -48,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
 
             helper.setTo(user.getEmail());
             helper.setSubject("Sipariş Numarası için Fatura " + order.getId());
-            helper.setText("Sayın " + user.getFullName() + ",\n\nLütfen faturanızı kontrol ediniz.\n\nSipraişiniz için teşekkürler!\n\nSaygılarımla,\nTRENDYOL");
+            helper.setText("Sayın " + user.getFullName() + ",\n\nLütfen faturanızı kontrol ediniz.\n\nSiparişiniz için teşekkürler!\n\nSaygılarımla,\nTRENDYOL");
 
             // PDF olarak fatura dosyasını ekleyin
             helper.addAttachment("e-fatura.pdf", new ByteArrayResource(invoiceBytes), "application/pdf");
